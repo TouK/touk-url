@@ -1,4 +1,6 @@
 dist*
+touk-url.sqlite3-shm
+touk-url.sqlite3-wal
 .stack-work/
 static/tmp/
 static/combined/
