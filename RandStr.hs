@@ -1,7 +1,9 @@
 module RandStr where
 
+import Prelude
 import Control.Monad
 import System.Random
+import qualified Data.Text as T
 
-randomStringWithLen :: Int -> IO (String)
-randomStringWithLen len = liftM (take len . randomRs ('a', 'z')) newStdGen
+randomStringWithLen :: Int -> IO (T.Text)
+randomStringWithLen len = liftM (T.pack . take len . randomRs ('a', 'z')) newStdGen
