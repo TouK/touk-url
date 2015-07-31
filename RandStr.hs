@@ -3,5 +3,5 @@ module RandStr where
 import Control.Monad
 import System.Random
 
-randomString :: IO (String)
-randomString = liftM (take 10 . randomRs ('a', 'z')) newStdGen
+randomStringWithLen :: Int -> IO (String)
+randomStringWithLen len = liftM (take len . randomRs ('a', 'z')) newStdGen
