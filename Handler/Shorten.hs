@@ -8,4 +8,4 @@ import Types
 postShortenR :: Handler Value
 postShortenR = do
     url <- requireJsonBody :: Handler URL
-    return $ object [ "url" .= "test"]
+    return $ object [ "url" .= ("test" :: Text) ]
