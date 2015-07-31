@@ -1,4 +1,5 @@
-<h1> Enter your text
+<h1>TouKURL
+<h3> Enter URL:
 <form method=post action=@{EncodeR}>
-    <input type=text name=url>
-    <input type=submit>
+    <input type=text name=url value="url">
+    <input type=submit value="Shorten">

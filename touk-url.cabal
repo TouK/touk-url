@@ -18,6 +18,7 @@ library
                      Import
                      Import.NoFoundation
                      Model
+                     RandStr
                      Settings
                      Settings.StaticFiles
                      Handler.Common
@@ -85,6 +86,7 @@ library
                  , time
                  , text
                  , aeson
+                 , random
 
 executable         touk-url
     if flag(library-only)
