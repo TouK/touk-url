@@ -5,5 +5,5 @@
 /robots.txt RobotsR GET
 
 / HomeR GET POST
-/encode/ ShortenR POST
+/encode/ EncodeR GET POST
 /decode/#Text DecodeR GET
