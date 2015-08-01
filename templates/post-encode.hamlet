@@ -1,1 +1,1 @@
-<h2>#{encodedUrl}</h2>
+<h2><a href="@{DecodeR encodedUrl}">@{DecodeR encodedUrl}</a></h2>
