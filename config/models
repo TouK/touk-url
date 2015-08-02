@@ -9,7 +9,7 @@ Email
     verkey Text Maybe
     UniqueEmail email
 
-URL
+URL sql=url
     original Text
     encoded Text
     deriving Show
