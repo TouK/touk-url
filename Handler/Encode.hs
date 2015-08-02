@@ -1,8 +1,10 @@
 module Handler.Encode where
 
 import Import
-import qualified Data.Text as T
 import RandStr as R
+import Data.Char
+import Text.Parsec as P hiding ((<|>))
+import Text.Parsec.Text
 
 getEncodeR :: Handler Html
 getEncodeR = defaultLayout $(widgetFile "get-encode")
@@ -10,9 +12,11 @@ getEncodeR = defaultLayout $(widgetFile "get-encode")
 postEncodeR :: Handler Html
 postEncodeR = do
   urlReceived <- runInputPost $ ireq textField "url"
-
-  encodedUrl <- getShortUrl urlReceived
-  defaultLayout $(widgetFile "post-encode")
+  case isValidUrl urlReceived of
+    True -> do
+      encodedUrl <- getShortUrl urlReceived
+      defaultLayout $(widgetFile "post-encode")
+    False -> redirect EncodeR
 
 getShortUrl :: Text -> Handler Text
 getShortUrl url = do
@@ -35,3 +39,27 @@ generateNewShort url = do
   case dbProbe of
     [] -> fmap (const candidate) (runDB $ insert $ URL url candidate)
     _ -> generateNewShort url
+
+isValidUrl :: Text -> Bool
+isValidUrl url =
+  case parse parser "failmsg" url of
+    Left _ -> False
+    _ -> True
+
+
+word :: Parser Text
+word = fmap pack $ many1 $ satisfy ((\a b c -> a || b || c) <$> isAlpha <*> isDigit <*> (=='-'))
+
+parser :: Parser ()
+parser = do
+  P.try (string "https") <|> string "http"
+  string "://"
+  sepBy1 word (char '.')
+  optional $ char ':'
+  optional $ many1 digit
+  optional $ char '/'
+  optional $ sepEndBy1 word (char '/')
+  optional $ oneOf "?#"
+  -- TODO: parse queries
+  optional $ many anyChar
+  eof

@@ -1,14 +1,16 @@
-{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE LambdaCase, OverloadedStrings #-}
 module Handler.Decode where
 
 import Import
 
 getDecodeR :: Text -> Handler Html
 getDecodeR text = do
+    render <- getUrlRender
     realUrl <- fmap (\case {(Just url) -> url;
-                             Nothing -> "this url is not in db"})
+                             Nothing -> render EncodeR})
               (findShortUrl text)
-    defaultLayout $(widgetFile "decode")
+    --defaultLayout $(widgetFile "decode")
+    redirect realUrl
 
 findShortUrl :: Text -> Handler (Maybe Text)
 findShortUrl short = do
