@@ -6,4 +6,4 @@
 
 / HomeR GET POST
 /encode/ EncodeR GET POST
-/decode/#Text DecodeR GET
+!/#Text DecodeR GET

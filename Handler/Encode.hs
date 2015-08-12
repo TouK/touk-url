@@ -26,7 +26,7 @@ getShortUrl url = do
   -- if not, create the new one
   case dbProbe of
     [] -> generateNewShort url
-    (Entity _ (URL _ short)):_ -> return short
+    Entity _ (URL _ short):_ -> return short
     --_ -> error "should never happen"
 
 generateNewShort :: Text -> Handler Text
@@ -52,9 +52,9 @@ word = fmap pack $ many1 $ satisfy ((\a b c -> a || b || c) <$> isAlpha <*> isDi
 
 parser :: Parser ()
 parser = do
-  P.try (string "https") <|> string "http"
-  string "://"
-  sepBy1 word (char '.')
+  _ <- P.try (string "https") <|> string "http"
+  _ <- string "://"
+  _ <- sepBy1 word (char '.')
   optional $ char ':'
   optional $ many1 digit
   optional $ char '/'
