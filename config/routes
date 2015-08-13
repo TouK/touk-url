@@ -4,6 +4,5 @@
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 
-/ HomeR GET POST
-/encode/ EncodeR GET POST
+/ EncodeR GET POST
 !/#Text DecodeR GET
