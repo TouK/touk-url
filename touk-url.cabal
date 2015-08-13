@@ -22,7 +22,6 @@ library
                      Settings
                      Settings.StaticFiles
                      Handler.Common
-                     Handler.Home
                      Handler.Encode
                      Handler.Decode
 
