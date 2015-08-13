@@ -1,0 +1,14 @@
+{
+  "adjectives": [ 
+    "black", "red", "fantastic", "pure", "monadic", "applicative", "comonadic",
+    "digestive"
+  ]
+  ,"nouns": [
+    "lambda", "horse", "haskell", "cat", "dog", "beer", "cerveza", "elka", 
+    "java", "bikes", "skills"
+  ]
+  ,"verbs": [
+    "attacks", "rides", "plants", "eats", "unbans", "drinks", "smokes"
+  ]
+
+}

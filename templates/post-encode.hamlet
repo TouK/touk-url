@@ -1,1 +1,2 @@
-<h2><a href="@{DecodeR encodedUrl}">@{DecodeR encodedUrl}</a></h2>
+<h2><a href="@{DecodeR encoded}">@{DecodeR encoded}</a></h2>
+<h2><a href="@{DecodeR funEncoded}">@{DecodeR funEncoded}</a></h2>

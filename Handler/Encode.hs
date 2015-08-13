@@ -5,6 +5,7 @@ import RandStr as R
 import Data.Char
 import Text.Parsec as P hiding ((<|>))
 import Text.Parsec.Text
+import Words.Generator
 
 getEncodeR :: Handler Html
 getEncodeR = defaultLayout $(widgetFile "get-encode")
@@ -14,11 +15,11 @@ postEncodeR = do
   urlReceived <- runInputPost $ ireq textField "url"
   case isValidUrl urlReceived of
     True -> do
-      encodedUrl <- getShortUrl urlReceived
+      (encoded, funEncoded) <- getShortUrl urlReceived
       defaultLayout $(widgetFile "post-encode")
     False -> redirect EncodeR
 
-getShortUrl :: Text -> Handler Text
+getShortUrl :: Text -> Handler (Text, Text)
 getShortUrl url = do
   -- look for entries with given full url
   dbProbe <- runDB $ selectList [URLOriginal ==. url] []
@@ -26,19 +27,38 @@ getShortUrl url = do
   -- if not, create the new one
   case dbProbe of
     [] -> generateNewShort url
-    Entity _ (URL _ short):_ -> return short
+    Entity _ URL{uRLEncoded=short, uRLFunEncoded=fun}:_ -> return (short,fun)
     --_ -> error "should never happen"
 
-generateNewShort :: Text -> Handler Text
+generateNewShort :: Text -> Handler (Text,Text)
 generateNewShort url = do
+  wordsdb <- appWordsDatabase <$> getYesod
   -- generate random string
-  candidate <- lift $ R.randomStringWithLen 6
-  dbProbe <- runDB $ selectList [URLEncoded ==. candidate] []
-  -- if it is already taken, generate new
-  -- if not, insert entry and return it
+  -- dbProbe <- runDB $ selectList [URLEncoded ==. candidate] []
+  -- case dbProbe of
+    -- [] -> fmap (const candidate) (runDB $ insert $ URL url candidate)
+    -- _ -> generateNewShort url
+  randString <- getUniquePhrase (R.randomStringWithLen 6) url URLEncoded
+  randFunString <- getUniquePhrase (getRandomPhrase wordsdb) url URLFunEncoded
+  _ <- runDB $ insert $ URL url randString randFunString
+  return (randString, randFunString)
+
+
+getUniquePhrase :: IO Text -> Text -> EntityField URL Text -> Handler Text
+getUniquePhrase gen url field = do
+  candidate <- lift gen
+  condition <- isUniquePhrase url field candidate
+  case condition of
+    True -> return candidate
+    False -> getUniquePhrase gen url field
+
+isUniquePhrase :: Text -> EntityField URL Text -> Text -> Handler Bool
+isUniquePhrase url field candidate = do
+  dbProbe <- runDB $ selectList [field ==. candidate] []
   case dbProbe of
-    [] -> fmap (const candidate) (runDB $ insert $ URL url candidate)
-    _ -> generateNewShort url
+    [] -> return True
+    _ -> return False
+
 
 isValidUrl :: Text -> Bool
 isValidUrl url =

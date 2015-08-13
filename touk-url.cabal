@@ -24,6 +24,7 @@ library
                      Handler.Common
                      Handler.Encode
                      Handler.Decode
+                     Words.Generator
 
     if flag(dev) || flag(library-only)
         cpp-options:   -DDEVELOPMENT
