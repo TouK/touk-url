@@ -13,11 +13,12 @@ getEncodeR = defaultLayout $(widgetFile "get-encode")
 postEncodeR :: Handler Html
 postEncodeR = do
   urlReceived <- runInputPost $ ireq textField "url"
-  case isValidUrl urlReceived of
-    True -> do
-      (encoded, funEncoded) <- getShortUrl urlReceived
-      defaultLayout $(widgetFile "post-encode")
-    False -> redirect EncodeR
+  if isValidUrl urlReceived then
+     do
+        (encoded, funEncoded) <- getShortUrl urlReceived
+        defaultLayout $(widgetFile "post-encode")
+    else
+      redirect EncodeR
 
 getShortUrl :: Text -> Handler (Text, Text)
 getShortUrl url = do
@@ -38,22 +39,23 @@ generateNewShort url = do
   -- case dbProbe of
     -- [] -> fmap (const candidate) (runDB $ insert $ URL url candidate)
     -- _ -> generateNewShort url
-  randString <- getUniquePhrase (R.randomStringWithLen 6) url URLEncoded
-  randFunString <- getUniquePhrase (getRandomPhrase wordsdb) url URLFunEncoded
+  randString <- getUniquePhrase (R.randomStringWithLen 6) URLEncoded
+  randFunString <- getUniquePhrase (getRandomPhrase wordsdb) URLFunEncoded
   _ <- runDB $ insert $ URL url randString randFunString
   return (randString, randFunString)
 
 
-getUniquePhrase :: IO Text -> Text -> EntityField URL Text -> Handler Text
-getUniquePhrase gen url field = do
+getUniquePhrase :: IO Text -> EntityField URL Text -> Handler Text
+getUniquePhrase gen field = do
   candidate <- lift gen
-  condition <- isUniquePhrase url field candidate
-  case condition of
-    True -> return candidate
-    False -> getUniquePhrase gen url field
+  condition <- isUniquePhrase field candidate
+  if condition then
+      return candidate
+    else
+      getUniquePhrase gen field
 
-isUniquePhrase :: Text -> EntityField URL Text -> Text -> Handler Bool
-isUniquePhrase url field candidate = do
+isUniquePhrase :: EntityField URL Text -> Text -> Handler Bool
+isUniquePhrase field candidate = do
   dbProbe <- runDB $ selectList [field ==. candidate] []
   case dbProbe of
     [] -> return True
