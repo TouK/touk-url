@@ -7,17 +7,32 @@ import Test.Hspec
 
 parseURL = parse parser "url"
 
-urls :: [Text]
-urls = "http://valid.pl"
-       : "http://lol-valid.pl"
-       : "https://touk.pl/?token=as2df"
-       : "http://192.168.1.10/home/"
-       : "http://192.10.10.10:12/home"
-       : "http://touk.pl/admin/admin/admin/?pw=tajne"
-       : []
+goodUrls :: [Text]
+goodUrls = "http://valid.pl"
+         : "http://lol-valid.pl"
+         : "http://bal.pl:1337"
+         : "https://touk.pl/?token=as2df"
+         : "http://192.168.1.10/home/"
+         : "http://192.10.10.10:12/home"
+         : "http://touk.pl/admin/admin/admin/?pw=tajne"
+         : []
+
+badUrls :: [Text]
+badUrls = "htt://badurl.pl"
+        : "http://.touk.jp/"
+        : "touk.pl"
+        : "127.0.0.1:274"
+        : "http://you.are.bad.pl:/"
+        : []
+
 
 spec :: Spec
 spec = do
-  describe "Handler.Encode parser" $ do
-    forM_ urls $ \url ->
+  describe "Handler.Encode parser valid urls" $ do
+    forM_ goodUrls $ \url ->
       it (unpack url) $ parseURL url `shouldBe` Right ()
+
+  describe "Handler.Encode parser invalid urls" $ do
+    forM_ badUrls $ \url ->
+      it (unpack url) $ parseURL url `shouldNotBe` Right ()
+

@@ -77,8 +77,7 @@ parser = do
   _ <- P.try (string "https") <|> string "http"
   _ <- string "://"
   _ <- sepBy1 word (char '.')
-  optional $ char ':'
-  optional $ many1 digit
+  optional $ char ':' >> many1 digit
   optional $ char '/'
   optional $ sepEndBy1 word (char '/')
   optional $ oneOf "?#"

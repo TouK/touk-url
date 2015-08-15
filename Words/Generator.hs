@@ -3,13 +3,8 @@
 module Words.Generator where
 
 import ClassyPrelude
-import Data.Text (Text)
-import Data.Vector (Vector)
 import System.Random
-import Control.Monad
-import System.IO
 import Data.Aeson
-import GHC.Generics
 
 import qualified Data.Vector as V
 import qualified Data.Text as T
@@ -23,6 +18,9 @@ data DataBase = DataBase
 
 instance FromJSON DataBase
 instance ToJSON DataBase
+
+loadDataBase :: IO (Maybe DataBase)
+loadDataBase = fmap decode $ B.readFile "db.json"
 
 getRandomElement :: Vector Text -> IO Text
 getRandomElement vect = do
@@ -38,10 +36,6 @@ getRandomPhrase (DataBase adjs nouns verbs) = do
   verb <- getRandomElement verbs
   noun2 <- getRandomElement nouns
   return $ T.intercalate "-" [adj, noun1, verb, noun2]
-
-
-loadDataBase :: IO (Maybe DataBase)
-loadDataBase = fmap decode $ B.readFile "db.json"
 
 getPhrase :: IO (Maybe Text)
 getPhrase = do

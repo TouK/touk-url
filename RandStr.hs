@@ -1,7 +1,6 @@
 module RandStr where
 
-import Prelude
-import Control.Monad
+import ClassyPrelude
 import System.Random
 import qualified Data.Text as T
 
