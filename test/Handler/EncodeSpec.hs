@@ -30,13 +30,13 @@ spec :: Spec
 spec = testsWithApp >> testsWithoutApp
 
 testsWithApp :: Spec
-testsWithApp = withApp $ do
+testsWithApp = withApp $
   it "POSTing URL should return 2 shortened urls" $ do
+
     request $ do
       setUrl EncodeR
       setMethod "POST"
-      addToken
-      byLabel "url" "http://touk.pl"
+      addPostParam "url" "http://touk.pl"
 
     statusIs 200
     htmlCount ".classyEncoded" 1
