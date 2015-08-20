@@ -3,8 +3,8 @@ module Handler.EncodeSpec (spec) where
 import Handler.Encode
 import TestImport
 import Text.Parsec
-import Test.Hspec
 
+parseURL :: Text -> Either ParseError ()
 parseURL = parse parser "url"
 
 goodUrls :: [Text]
@@ -27,7 +27,23 @@ badUrls = "htt://badurl.pl"
 
 
 spec :: Spec
-spec = do
+spec = testsWithApp >> testsWithoutApp
+
+testsWithApp :: Spec
+testsWithApp = withApp $ do
+  it "POSTing URL should return 2 shortened urls" $ do
+    request $ do
+      setUrl EncodeR
+      setMethod "POST"
+      addToken
+      byLabel "url" "http://touk.pl"
+
+    statusIs 200
+    htmlCount ".classyEncoded" 1
+    htmlCount ".funnyEncoded" 1
+
+testsWithoutApp :: Spec
+testsWithoutApp = do
   describe "Handler.Encode parser valid urls" $ do
     forM_ goodUrls $ \url ->
       it (unpack url) $ parseURL url `shouldBe` Right ()
@@ -35,4 +51,5 @@ spec = do
   describe "Handler.Encode parser invalid urls" $ do
     forM_ badUrls $ \url ->
       it (unpack url) $ parseURL url `shouldNotBe` Right ()
+
 

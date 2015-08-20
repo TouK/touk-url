@@ -1,2 +1,2 @@
-<h2><a href="@{DecodeR encoded}">@{DecodeR encoded}</a>
-<h2><a href="@{DecodeR funEncoded}">@{DecodeR funEncoded}</a>
+<h2 .classyEncoded><a href="@{DecodeR encoded}">@{DecodeR encoded}</a>
+<h2 .funnyEncoded><a href="@{DecodeR funEncoded}">@{DecodeR funEncoded}</a>
