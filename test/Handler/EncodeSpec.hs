@@ -3,6 +3,7 @@ module Handler.EncodeSpec (spec) where
 import Handler.Encode
 import TestImport
 import Text.Parsec
+import Data.Aeson
 
 parseURL :: Text -> Either ParseError ()
 parseURL = parse parser "url"
@@ -36,11 +37,11 @@ testsWithApp = withApp $
     request $ do
       setUrl EncodeR
       setMethod "POST"
-      addPostParam "url" "http://touk.pl"
+      setRequestBody $ encode $ object $ ["url" .= ("http://touk.pl" :: Text)]
 
     statusIs 200
-    htmlCount ".classyEncoded" 1
-    htmlCount ".funnyEncoded" 1
+    bodyContains "classyEncoded"
+    bodyContains "funEncoded"
 
 testsWithoutApp :: Spec
 testsWithoutApp = do

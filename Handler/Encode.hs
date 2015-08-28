@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveGeneric #-}
 module Handler.Encode where
 
 import Import
@@ -5,20 +6,37 @@ import RandStr as R
 import Data.Char
 import Text.Parsec as P hiding ((<|>))
 import Text.Parsec.Text
+import qualified Data.Aeson as J
 import Words.Generator
+
+errorMsg :: Text
+errorMsg = "Invalid URL"
+
+data Url = Url Text
+  deriving (Show, Generic)
+
+instance FromJSON Url where
+  parseJSON (Object v) = Url <$>
+                        v .: "url"
+  parseJSON _          = mzero
 
 getEncodeR :: Handler Html
 getEncodeR = defaultLayout $(widgetFile "get-encode")
 
-postEncodeR :: Handler Html
+postEncodeR :: Handler Value
 postEncodeR = do
-  urlReceived <- runInputPost $ ireq textField "url"
-  if isValidUrl urlReceived then
-     do
-        (encoded, funEncoded) <- getShortUrl urlReceived
-        defaultLayout $(widgetFile "post-encode")
-    else
-      redirect EncodeR
+  urlReceived <- parseJsonBody :: Handler (J.Result Url)
+  render <- getUrlRender
+  case urlReceived  of
+    J.Error e -> return $ object ["jsonError" .= e ]
+    J.Success (Url url) -> do
+      if isValidUrl url then
+        do
+          (encoded, funEncoded) <- getShortUrl url
+          return $ object ["classyEncoded" .= render (DecodeR encoded),
+                           "funEncoded" .= render (DecodeR funEncoded)]
+        else
+          return $ object ["error" .= errorMsg]
 
 getShortUrl :: Text -> Handler (Text, Text)
 getShortUrl url = do
