@@ -1,0 +1,132 @@
+@import url(https://fonts.googleapis.com/css?family=Kadwa:400,700);
+
+
+#resultarea {
+  font-size: 150%;
+  transition: 0.7s all;
+}
+
+.encoded {
+  margin-left: 10px;
+}
+
+.classyEncoded {
+
+}
+.funnyEncoded {
+}
+
+body {
+  font-family: kadwa, sans-serif;
+  background-image: url("bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#main {
+  background-color: rgba(255,255,255,0.6);
+  padding: 35px 50px;
+  margin-top: 10vh;
+  transition: 0.7s all;
+}
+
+#uploadurl, .upload {
+  font-size: 25px;
+  padding: 10px 20px;
+  border: none;
+  height: 60px;
+}
+
+#uploadurl {
+  width: 75%;
+}
+
+#url-form {
+
+  transition: 0.7s all;
+}
+
+.up {
+    transform: translateY(40px);
+}
+
+.down {
+  transform: translateY(0px);
+}
+
+.upload {
+  background-color: rgba(165,42,42,0.85);
+  color: white;
+  vertical-align: top;
+  width: 15%;
+  transition: 0.25s all;
+}
+
+h1 {
+  font-size: 45px;
+  margin: 50px;
+}
+
+h1, h3, form, button {
+  text-align: center;
+}
+
+form {
+  margin-bottom: 35px;
+}
+
+label {
+  display: block;
+}
+
+
+.hidden {
+  transform:scale(0);
+  transform-origin: center;
+  opacity: 0;
+  display: block!important;
+  visibility: visible!important;
+}
+
+.visible {
+  transform:scale(1);
+  transform-origin: center;
+  opacity: 1;
+}
+
+ul {
+    list-style: none;
+    margin-left: 15px;
+}
+
+
+li div,
+li a {
+  display: inline-block;
+  font-size: 25px;
+  text-align: center;
+  line-height: 2;
+}
+
+a {
+  color: black;
+}
+
+
+.encodelabel {
+  color: brown;
+}
+
+button:hover {
+  background-color: rgba(165,42,42,1);
+}
+
+
+@media all and (max-width: 1200px) {
+  body {
+    background-size: auto;
+  }
+  #uploadurl, .upload {
+    width: auto;
+  }
+}

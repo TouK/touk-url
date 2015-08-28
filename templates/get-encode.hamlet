@@ -1,5 +1,12 @@
-<h1>TouKURL
-<h3>Enter URL:
-<form method=post action=@{EncodeR}>
-    <input type=text name=url value="http://www.touk.pl">
-    <input type=submit value="Shorten">
+<h1>TouK URL shortener
+<form #url-form .up>
+    <input type=text name=url value="http://www.touk.pl" #uploadurl>
+    <button type=submit value="Shorten" .upload>Shorten
+<ul id="resultarea" class="hidden">
+  <li>
+    <div class="encodelabel">Funny URL:
+    <a href="#" id="url1" class="funnyEncoded encoded">
+  <li>
+    <div class="encodelabel">Classy URL:
+    <a href="#" id="url2" class="classyEncoded encoded">
+<h2 id="nothing-found" class="hidden">
