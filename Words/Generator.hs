@@ -1,5 +1,10 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE OverloadedStrings #-}
+-- |
+-- Module: Words.Generator
+-- Copyright: (c) 2015 TouK
+-- Maintainer: Przemysław Kopański pkp@touk.pl
+
 module Words.Generator where
 
 import ClassyPrelude
@@ -10,6 +15,7 @@ import qualified Data.Vector as V
 import qualified Data.Text as T
 import qualified Data.ByteString.Lazy as B
 
+-- | Database of words used to produce 'funny' link
 data DataBase = DataBase
   { adjectives :: Vector Text
   , nouns :: Vector Text
@@ -19,9 +25,11 @@ data DataBase = DataBase
 instance FromJSON DataBase
 instance ToJSON DataBase
 
+-- | Loads words' database from file db.json
 loadDataBase :: IO (Maybe DataBase)
 loadDataBase = fmap decode $ B.readFile "db.json"
 
+-- | Returns random element of a vector
 getRandomElement :: Vector Text -> IO Text
 getRandomElement vect = do
   randIndex <- randomRIO (0, length vect - 1)
@@ -29,6 +37,7 @@ getRandomElement vect = do
     Just num -> return num
     Nothing -> getRandomElement vect
 
+-- | Generates random phrase in pattern: adjective-noun-verb-noun
 getRandomPhrase :: DataBase -> IO Text
 getRandomPhrase (DataBase adjs nouns verbs) = do
   adj <- getRandomElement adjs

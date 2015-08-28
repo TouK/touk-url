@@ -1,3 +1,8 @@
+-- |
+-- Module: Handler.EncodeSpec
+-- Copyright: (c) 2015 TouK
+-- Maintainer: Przemysław Kopański pkp@touk.pl
+
 module Handler.EncodeSpec (spec) where
 
 import Handler.Encode

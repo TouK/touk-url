@@ -1,4 +1,9 @@
 {-# LANGUAGE DeriveGeneric #-}
+-- |
+-- Module: Handler.Encode
+-- Copyright: (c) 2015 TouK
+-- Maintainer: Przemysław Kopański pkp@touk.pl
+
 module Handler.Encode where
 
 import Import
@@ -9,6 +14,12 @@ import Text.Parsec.Text
 import qualified Data.Aeson as J
 import Words.Generator
 
+{-
+  Handlers for encoding
+-}
+
+
+-- | Error message while URL is invalid
 errorMsg :: Text
 errorMsg = "Invalid URL"
 
@@ -20,9 +31,11 @@ instance FromJSON Url where
                         v .: "url"
   parseJSON _          = mzero
 
+-- | Handler for GET query, returns web page
 getEncodeR :: Handler Html
 getEncodeR = defaultLayout $(widgetFile "get-encode")
 
+-- | Handler for POST query, returns JSON
 postEncodeR :: Handler Value
 postEncodeR = do
   urlReceived <- parseJsonBody :: Handler (J.Result Url)
@@ -38,6 +51,7 @@ postEncodeR = do
         else
           return $ object ["error" .= errorMsg]
 
+-- | Checks whether shortened URLs already exist in database, if not, generates them
 getShortUrl :: Text -> Handler (Text, Text)
 getShortUrl url = do
   -- look for entries with given full url
@@ -47,23 +61,23 @@ getShortUrl url = do
   case dbProbe of
     [] -> generateNewShort url
     Entity _ URL{uRLEncoded=short, uRLFunEncoded=fun}:_ -> return (short,fun)
-    --_ -> error "should never happen"
 
+-- | Generates unique shortened URLs for the given one
 generateNewShort :: Text -> Handler (Text,Text)
 generateNewShort url = do
   wordsdb <- appWordsDatabase <$> getYesod
+
   -- generate random string
-  -- dbProbe <- runDB $ selectList [URLEncoded ==. candidate] []
-  -- case dbProbe of
-    -- [] -> fmap (const candidate) (runDB $ insert $ URL url candidate)
-    -- _ -> generateNewShort url
   randString <- getUniquePhrase (R.randomStringWithLen 6) URLEncoded
   randFunString <- getUniquePhrase (getRandomPhrase wordsdb) URLFunEncoded
+
   _ <- runDB $ insert $ URL url randString randFunString
   return (randString, randFunString)
 
-
-getUniquePhrase :: IO Text -> EntityField URL Text -> Handler Text
+-- | Returns unique phrase not existing in database
+getUniquePhrase :: IO Text -- ^Monadic phrase generator
+                -> EntityField URL Text -- ^Criteria of given phrase
+                -> Handler Text -- ^Unique phrase which is not already used in database
 getUniquePhrase gen field = do
   candidate <- lift gen
   condition <- isUniquePhrase field candidate
@@ -72,24 +86,28 @@ getUniquePhrase gen field = do
     else
       getUniquePhrase gen field
 
-isUniquePhrase :: EntityField URL Text -> Text -> Handler Bool
+-- | Looks for given criteria in database and checks if given value would be unique
+isUniquePhrase :: EntityField URL Text -- ^Criteria in database
+               -> Text -- ^Value of which uniqueness is checked
+               -> Handler Bool
 isUniquePhrase field candidate = do
   dbProbe <- runDB $ selectList [field ==. candidate] []
   case dbProbe of
     [] -> return True
     _ -> return False
 
-
+-- | Checks wether given URL is valid
 isValidUrl :: Text -> Bool
 isValidUrl url =
   case parse parser "failmsg" url of
     Left _ -> False
     _ -> True
 
-
+-- | Definition of word used in URL standards (allowed alphabet with digits and "-")
 word :: Parser Text
 word = fmap pack $ many1 $ satisfy ((\a b c -> a || b || c) <$> isAlpha <*> isDigit <*> (=='-'))
 
+-- | URL parser, used to check wether given URL is valid
 parser :: Parser ()
 parser = do
   _ <- P.try (string "https") <|> string "http"
