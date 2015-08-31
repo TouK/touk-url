@@ -18,7 +18,7 @@
 
 body {
   font-family: kadwa, sans-serif;
-  background-image: url("bg.jpg");
+  background-image: url("../bg.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }

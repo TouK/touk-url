@@ -6,7 +6,7 @@ $("#url-form").submit(function( event ) {
 $( ".upload" ).click(function() {
   var  uploadurl = '{' + '\"url\":' + '\"' + $("#uploadurl").val() + '\"' + '}';
   $.ajax({
-      url : "http://localhost:3000/",
+      url : "@{EncodeR}",
       type: "POST",
       data : uploadurl,
       dataType: "json",
