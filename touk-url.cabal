@@ -88,6 +88,8 @@ library
                  , aeson
                  , random
                  , parsec
+                 , wai
+                 , network
 
 executable         touk-url
     if flag(library-only)
@@ -138,3 +140,4 @@ test-suite test
                  , QuickCheck
                  , quickcheck-instances
                  , parsec
+                 , aeson

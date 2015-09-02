@@ -71,7 +71,8 @@ generateNewShort url = do
   randString <- getUniquePhrase (R.randomStringWithLen 6) URLEncoded
   randFunString <- getUniquePhrase (getRandomPhrase wordsdb) URLFunEncoded
 
-  _ <- runDB $ insert $ URL url randString randFunString
+  currentTime <- lift getCurrentTime
+  _ <- runDB $ insert $ URL url randString randFunString currentTime
   return (randString, randFunString)
 
 -- | Returns unique phrase not existing in database

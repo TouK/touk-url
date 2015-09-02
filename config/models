@@ -2,6 +2,13 @@ URL sql=url
     original Text
     encoded Text
     funEncoded Text
+    dateCreated UTCTime
     deriving Show
+
+Visit sql=visit
+    encoded Text
+    original URLId
+    ipAddress Text
+    dateVisited UTCTime
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)

@@ -4,4 +4,4 @@
 /robots.txt RobotsR GET
 
 / EncodeR GET POST
-!/#Text DecodeR GET
+/global/#Text DecodeR GET
