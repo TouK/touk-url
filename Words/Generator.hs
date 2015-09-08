@@ -27,7 +27,7 @@ instance ToJSON DataBase
 
 -- | Loads words' database from file db.json
 loadDataBase :: IO (Maybe DataBase)
-loadDataBase = fmap decode $ B.readFile "db.json"
+loadDataBase = fmap decode $ B.readFile "static/db.json"
 
 -- | Returns random element of a vector
 getRandomElement :: Vector Text -> IO Text

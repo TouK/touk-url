@@ -1,6 +1,5 @@
 # After you've edited this file, remove the following line to allow
 # `yesod keter` to build your bundle.
-user-edited: false
 
 # A Keter app is composed of 1 or more stanzas. The main stanza will define our
 # web application. See the Keter documentation for more information on
@@ -12,7 +11,8 @@ stanzas:
 
     # Name of your executable. You are unlikely to need to change this.
     # Note that all file paths are relative to the keter.yml file.
-    exec: ../dist/build/touk-url/touk-url
+    exec: ../.stack-work/dist/x86_64-linux/Cabal-1.22.4.0/build/touk-url/touk-url
+
 
     # Command line options passed to your application.
     args: []
@@ -21,7 +21,8 @@ stanzas:
       # You can specify one or more hostnames for your application to respond
       # to. The primary hostname will be used for generating your application
       # root.
-      - www.touk-url.com
+      - api.touk.pl:3000
+      - url.touk.pl
 
     # Enable to force Keter to redirect to https
     # Can be added to any stanza
@@ -30,7 +31,7 @@ stanzas:
   # Static files.
   - type: static-files
     hosts:
-      - static.touk-url.com
+      - static.url.touk.pl
     root: ../static
 
     # Uncomment to turn on directory listings.
@@ -40,9 +41,9 @@ stanzas:
   - type: redirect
 
     hosts:
-      - touk-url.com
+      - url.touk.pl
     actions:
-      - host: www.touk-url.com
+      - host: api.touk.pl:3000/global
         # secure: false
         # port: 80
 
@@ -62,5 +63,5 @@ stanzas:
 # If you would like to have Keter automatically create a PostgreSQL database
 # and set appropriate environment variables for it to be discovered, uncomment
 # the following line.
-# plugins:
-#   postgres: true
+plugins:
+  postgres: true

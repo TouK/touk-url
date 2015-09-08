@@ -18,7 +18,7 @@ getDecodeR encoded = do
 getRedirectionUrl :: Text -> Handler Text
 getRedirectionUrl encoded = do
   maybeUrl <- findShortUrl encoded
-  ipAddress <- fmap (maybe "unknown" id) getIpAddress
+  ipAddress <- fmap (fromMaybe "unknown") getIpAddress
   case maybeUrl of
     Just (key, original) -> do
       addOneVisit key encoded ipAddress
