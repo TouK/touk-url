@@ -23,7 +23,7 @@ database:
   host:     "_env:PGHOST:localhost"
   port:     "_env:PGPORT:5432"
   database: "_env:PGDATABASE:touk-url"
-  poolsize: "_env:PGPOOLSIZE:10"
+  poolsize: "_env:PGPOOLSIZE:20"
 
 copyright: (c) TouK 2015
 #analytics: UA-YOURCODE
