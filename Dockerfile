@@ -17,4 +17,4 @@ ADD config /config
 ADD .stack-work/dist/x86_64-linux/Cabal-1.22.4.0/build/touk-url/touk-url touk-url
 
 # Run touk-url
-ENTRYPOINT ./touk-url
+CMD ["./touk-url"]

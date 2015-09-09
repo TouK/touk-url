@@ -26,7 +26,7 @@ import Network.Wai.Middleware.RequestLogger (Destination (Logger),
                                              OutputFormat (..), destination,
                                              mkRequestLogger, outputFormat)
 import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
-                                             toLogStr)
+                                             newFileLoggerSet, toLogStr)
 
 -- Import all relevant handler modules here.
 -- Don't forget to add new modules to your cabal file!
@@ -49,7 +49,8 @@ makeFoundation appSettings = do
     -- Some basic initializations: HTTP connection manager, logger, and static
     -- subsite.
     appHttpManager <- newManager
-    appLogger <- newStdoutLoggerSet defaultBufSize >>= makeYesodLogger
+    appLogger <- (maybe newStdoutLoggerSet (flip newFileLoggerSet) (appLogFile appSettings)
+                  defaultBufSize) >>= makeYesodLogger
     appStatic <-
         (if appMutableStatic appSettings then staticDevel else static)
         (appStaticDir appSettings)
