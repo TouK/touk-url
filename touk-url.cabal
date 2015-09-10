@@ -24,6 +24,8 @@ library
                      Handler.Common
                      Handler.Encode
                      Handler.Decode
+                     Handler.Stats
+                     Handler.StatsApi
                      Words.Generator
 
     if flag(dev) || flag(library-only)

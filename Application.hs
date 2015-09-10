@@ -33,6 +33,8 @@ import System.Log.FastLogger                (defaultBufSize, newStdoutLoggerSet,
 import Handler.Common
 import Handler.Encode
 import Handler.Decode
+import Handler.Stats
+import Handler.StatsApi
 import Words.Generator
 
 -- This line actually creates our YesodDispatch instance. It is the second half

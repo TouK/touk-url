@@ -5,3 +5,5 @@
 
 / EncodeR GET POST
 /global/#Text DecodeR GET
+/stats/ StatsR GET
+/stats/api/#Text StatsApiR GET

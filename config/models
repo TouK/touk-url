@@ -10,5 +10,6 @@ Visit sql=visit
     original URLId
     ipAddress Text
     dateVisited UTCTime
+    deriving Show
 
  -- By default this file is used in Model.hs (which is imported by Foundation.hs)
