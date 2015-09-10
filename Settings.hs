@@ -68,7 +68,7 @@ instance FromJSON AppSettings where
         appDatabaseConf           <- o .: "database"
         appRoot                   <- o .: "approot"
         appHost                   <- fromString <$> o .: "host"
-        appPort                   <- o .: "port"
+        appPort                   <- o .: "appport"
         appIpFromHeader           <- o .: "ip-from-header"
 
         appDetailedRequestLogging <- o .:? "detailed-logging" .!= defaultDev

@@ -2,7 +2,7 @@
 FROM touk/url:core
 
 ENV APPROOT http://localhost:3000
-ENV PORT 3000
+ENV APPPORT 3000
 
 ENV PGUSER touk-url
 ENV PGPASS touk-url
