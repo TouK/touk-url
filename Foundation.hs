@@ -69,7 +69,6 @@ instance Yesod App where
             $(widgetFile "default-layout")
         withUrlRenderer $(hamletFile "templates/default-layout-wrapper.hamlet")
 
-
     -- Routes not requiring authentication.
     isAuthorized FaviconR _ = return Authorized
     isAuthorized RobotsR _ = return Authorized

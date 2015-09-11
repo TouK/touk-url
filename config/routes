@@ -1,5 +1,5 @@
 /static StaticR Static appStatic
-
+!/global/static StaticGlobalR Static appStatic
 /favicon.ico FaviconR GET
 /robots.txt RobotsR GET
 

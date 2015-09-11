@@ -1,0 +1,7 @@
+<img src="static/touk.png" alt="TouK"/>
+
+<script>
+    setTimeout(function() {
+      window.location.href="#{realUrl}";
+    }, 2000);
+ 

@@ -8,12 +8,14 @@ module Handler.Decode where
 
 import Import
 import Network.Wai
+import Text.Hamlet (hamletFile)
 
 -- | Redirects to saved url, if it's not found then redirects to main page
 getDecodeR :: Text -> Handler Html
 getDecodeR encoded = do
     realUrl <- getRedirectionUrl encoded
-    redirect realUrl
+    --redirect realUrl
+    redirectLayout $(widgetFile "get-decode")
 
 getRedirectionUrl :: Text -> Handler Text
 getRedirectionUrl encoded = do
@@ -52,3 +54,12 @@ findShortUrl short = do
   case dbProbe of
     [Entity key (URL original _ _ _)] -> return $ Just (key, original)
     _ -> return Nothing
+
+redirectLayout :: Widget -> Handler Html
+redirectLayout widget = do
+        mmsg <- getMessage
+        pc <- widgetToPageContent $ do
+            $(widgetFile "default-layout")
+        withUrlRenderer $(hamletFile "templates/redirect-layout-wrapper.hamlet")
+
+

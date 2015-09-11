@@ -8,11 +8,20 @@ $newline never
   <head>
     <meta charset="UTF-8">
 
-    <title>#{pageTitle pc}
+    <title>TouK URL :)
     <meta name="description" content="">
     <meta name="author" content="">
-    <script src="static/js/jquery-1.11.3.min.js">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style type="text/css">
+      body {
+        background: white }
+      div.container {
+        padding: 1em;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%) }
 
     ^{pageHead pc}
 
@@ -24,12 +33,7 @@ $newline never
       document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/,'js');
 
 
-
-
-
   <body>
     <div class="container">
-      <header>
-      <div id="main" role="main">
-        ^{pageBody pc}
+      ^{pageBody pc}
 
