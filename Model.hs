@@ -9,3 +9,13 @@ import Database.Persist.Quasi
 -- http://www.yesodweb.com/book/persistent/
 share [mkPersist sqlSettings, mkMigrate "migrateAll"]
     $(persistFileWith lowerCaseSettings "config/models")
+
+instance ToJSON URL where
+    toJSON URL{uRLOriginal=org
+              ,uRLEncoded=enc
+              ,uRLFunEncoded=fun
+              ,uRLDateCreated=date} =
+          object [ "original"      .= org
+                 , "classyEncoded" .= enc
+                 , "funEncoded"    .= fun
+                 , "dateCreated"   .= (show date) ]
